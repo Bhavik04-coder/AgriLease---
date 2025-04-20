@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriLease - Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .login-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .login-header h1 {
+            color: #4CAF50;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .login-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        .nav-tabs .nav-link {
+            color: #666;
+            font-weight: 600;
+        }
+        .nav-tabs .nav-link.active {
+            color: #4CAF50;
+            border-bottom: 3px solid #4CAF50;
+        }
+        .otp-input input {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 0 5px;
+        }
+        .btn-success {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+        .btn-success:hover {
+            background-color: #388E3C;
+            border-color: #388E3C;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-container">
+            <div class="login-header text-center mb-4">
+                <h1><i class="fas fa-tractor me-2"></i>AgriLease</h1>
+                <p>तुमच्या खात्यात लॉगिन करा</p>
+            </div>
+            
+            <ul class="nav nav-tabs mb-4" id="loginTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="farmer-tab" data-bs-toggle="tab" data-bs-target="#farmer" type="button" role="tab">शेतकरी लॉगिन</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="other-tab" data-bs-toggle="tab" data-bs-target="#other" type="button" role="tab">इतर लॉगिन</button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="loginTabsContent">
+                <!-- Farmer Login Form -->
+                <div class="tab-pane fade show active" id="farmer" role="tabpanel">
+                    <form id="farmerForm">
+                        <div class="mb-3">
+                            <label for="farmerMobile" class="form-label"><i class="fas fa-mobile-alt me-2 text-success"></i>मोबाईल नंबर</label>
+                            <input type="tel" class="form-control" id="farmerMobile" placeholder="तुमचा नोंदणीकृत मोबाईल नंबर टाका" required>
+                        </div>
+                        
+                        <!-- OTP Verification Section -->
+                        <div class="otp-container text-center mb-3" id="farmerOtpContainer" style="display: none;">
+                            <p>आम्ही तुमच्या मोबाईल नंबरवर OTP पाठवला आहे</p>
+                            <div class="d-flex justify-content-center my-3">
+                                <input type="text" maxlength="1" class="form-control otp-digit" data-index="1" style="width: 40px;">
+                                <input type="text" maxlength="1" class="form-control otp-digit" data-index="2" style="width: 40px;">
+                                <input type="text" maxlength="1" class="form-control otp-digit" data-index="3" style="width: 40px;">
+                                <input type="text" maxlength="1" class="form-control otp-digit" data-index="4" style="width: 40px;">
+                                <input type="text" maxlength="1" class="form-control otp-digit" data-index="5" style="width: 40px;">
+                                <input type="text" maxlength="1" class="form-control otp-digit" data-index="6" style="width: 40px;">
+                            </div>
+                            <div class="resend-otp">
+                                <span class="countdown" id="farmerCountdown">60</span> सेकंदांनंतर 
+                                <a href="#" id="farmerResendOtp">OTP पुन्हा पाठवा</a>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3" id="farmerPasswordGroup">
+                            <label for="farmerPassword" class="form-label"><i class="fas fa-lock me-2 text-success"></i>पासवर्ड</label>
+                            <input type="password" class="form-control" id="farmerPassword" placeholder="तुमचा पासवर्ड टाका">
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="farmerRemember">
+                                <label class="form-check-label" for="farmerRemember">लक्षात ठेवा</label>
+                            </div>
+                            <a href="#" class="text-success">पासवर्ड विसरलात?</a>
+                        </div>
+                        
+                        <button type="button" class="btn btn-success w-100 py-2 mb-3" id="farmerSendOtpBtn">OTP पाठवा</button>
+                        <button type="button" class="btn btn-success w-100 py-2 mb-3" id="farmerVerifyOtpBtn" style="display: none;">OTP सत्यापित करा</button>
+                        <button type="submit" class="btn btn-success w-100 py-2 mb-3" id="farmerLoginBtn" style="display: none;">लॉगिन करा</button>
+                        
+                        <p class="register-link">नवीन शेतकरी? <a href="register.html" class="text-success">येथे नोंदणी करा</a></p>
+                    </form>
+                </div>
+                
+                <!-- Other Users Login Form -->
+                <div class="tab-pane fade" id="other" role="tabpanel">
+                    <form id="otherForm">
+                        <div class="mb-3">
+                            <label for="userType" class="form-label"><i class="fas fa-user-tie me-2 text-success"></i>वापरकर्ता प्रकार</label>
+                            <select class="form-select" id="userType" required>
+                                <option value="">तुमची भूमिका निवडा</option>
+                                <option value="csc">CSC (कॉमन सर्व्हिस सेंटर)</option>
+                                <option value="zp">जिल्हा परिषद</option>
+                                <option value="dealer">उपकरण विक्रेता</option>
+                                <option value="landowner">जमीन मालक</option>
+                                <option value="other">इतर</option>
+                            </select>
+                        </div>
+
+                        <!-- Dynamic Fields -->
+                        <div class="dynamic-field mb-3" id="cscFields" style="display: none;">
+                            <label for="cscId" class="form-label"><i class="fas fa-id-card me-2 text-success"></i>CSC आयडी</label>
+                            <input type="text" class="form-control" id="cscId" placeholder="तुमचा CSC आयडी टाका">
+                        </div>
+
+                        <div class="dynamic-field mb-3" id="zpFields" style="display: none;">
+                            <label for="zpDistrict" class="form-label"><i class="fas fa-map-marker-alt me-2 text-success"></i>जिल्हा</label>
+                            <input type="text" class="form-control" id="zpDistrict" placeholder="तुमचा जिल्हा टाका">
+                        </div>
+
+                        <div class="dynamic-field mb-3" id="dealerFields" style="display: none;">
+                            <label for="dealerLicense" class="form-label"><i class="fas fa-file-alt me-2 text-success"></i>परवाना क्रमांक</label>
+                            <input type="text" class="form-control" id="dealerLicense" placeholder="तुमचा परवाना क्रमांक टाका">
+                        </div>
+
+                        <div class="dynamic-field mb-3" id="landownerFields" style="display: none;">
+                            <label for="landLocation" class="form-label"><i class="fas fa-map-pin me-2 text-success"></i>जमीन स्थान</label>
+                            <input type="text" class="form-control" id="landLocation" placeholder="जमिनीचे स्थान टाका">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="otherMobile" class="form-label"><i class="fas fa-mobile-alt me-2 text-success"></i>मोबाईल नंबर</label>
+                            <input type="tel" class="form-control" id="otherMobile" placeholder="नोंदणीकृत मोबाईल नंबर टाका" required>
+                        </div>
+                        
+                        <!-- OTP Verification Section -->
+                        <div class="otp-container text-center mb-3" id="otherOtpContainer" style="display: none;">
+                            <p>आम्ही तुमच्या मोबाईल नंबरवर OTP पाठवला आहे</p>
+                            <div class="d-flex justify-content-center my-3">
+                                <input type="text" maxlength="1" class="form-control otp-digit" data-index="1" style="width: 40px;">
+                                <input type="text" maxlength="1" class="form-control otp-digit" data-index="2" style="width: 40px;">
+                                <input type="text" maxlength="1" class="form-control otp-digit" data-index="3" style="width: 40px;">
+                                <input type="text" maxlength="1" class="form-control otp-digit" data-index="4" style="width: 40px;">
+                                <input type="text" maxlength="1" class="form-control otp-digit" data-index="5" style="width: 40px;">
+                                <input type="text" maxlength="1" class="form-control otp-digit" data-index="6" style="width: 40px;">
+                            </div>
+                            <div class="resend-otp">
+                                <span class="countdown" id="otherCountdown">60</span> सेकंदांनंतर 
+                                <a href="#" id="otherResendOtp">OTP पुन्हा पाठवा</a>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3" id="otherPasswordGroup">
+                            <label for="otherPassword" class="form-label"><i class="fas fa-lock me-2 text-success"></i>पासवर्ड</label>
+                            <input type="password" class="form-control" id="otherPassword" placeholder="तुमचा पासवर्ड टाका">
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="otherRemember">
+                                <label class="form-check-label" for="otherRemember">लक्षात ठेवा</label>
+                            </div>
+                            <a href="#" class="text-success">पासवर्ड विसरलात?</a>
+                        </div>
+                        
+                        <button type="button" class="btn btn-success w-100 py-2 mb-3" id="otherSendOtpBtn">OTP पाठवा</button>
+                        <button type="button" class="btn btn-success w-100 py-2 mb-3" id="otherVerifyOtpBtn" style="display: none;">OTP सत्यापित करा</button>
+                        <button type="submit" class="btn btn-success w-100 py-2 mb-3" id="otherLoginBtn" style="display: none;">लॉगिन करा</button>
+                        
+                        <p class="register-link">नवीन वापरकर्ता? <a href="register.html" class="text-success">येथे नोंदणी करा</a></p>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="login-footer">
+                <p>© 2023 AgriLease. सर्व हक्क राखीव.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCb_2y_s2ncvlz7ZbKGuzSphMRoJXrcx9g",
+            authDomain: "asep2-91872.firebaseapp.com",
+            projectId: "asep2-91872",
+            storageBucket: "asep2-91872.appspot.com",
+            messagingSenderId: "381260882914",
+            appId: "1:381260882914:web:6764b4617ba56f08574fbb",
+            measurementId: "G-MFEGJGX8TF"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        $(document).ready(function () {
+            // User type selection handler
+            $('#userType').change(function () {
+                $('.dynamic-field').hide();
+                const userType = $(this).val();
+                
+                if (userType === 'csc') {
+                    $('#cscFields').show();
+                } else if (userType === 'zp') {
+                    $('#zpFields').show();
+                } else if (userType === 'dealer') {
+                    $('#dealerFields').show();
+                } else if (userType === 'landowner') {
+                    $('#landownerFields').show();
+                }
+            });
+
+            // Farmer OTP Flow
+            $('#farmerSendOtpBtn').click(function() {
+                const phoneNumber = $('#farmerMobile').val();
+                if (!phoneNumber) {
+                    alert('कृपया मोबाईल नंबर टाका');
+                    return;
+                }
+                
+                // In a real app, you would send OTP here
+                // For demo, we'll simulate it
+                $('#farmerOtpContainer').show();
+                $('#farmerPasswordGroup').hide();
+                $('#farmerSendOtpBtn').hide();
+                $('#farmerVerifyOtpBtn').show();
+                startCountdown('farmer');
+                
+                alert('OTP पाठवला आहे (डेमो: 123456)');
+            });
+            
+            $('#farmerVerifyOtpBtn').click(function() {
+                const otp = getOtp('farmer');
+                if (!otp || otp.length !== 6) {
+                    alert('कृपया 6 अंकी OTP टाका');
+                    return;
+                }
+                
+                // In a real app, verify OTP with Firebase
+                // For demo, we'll accept any 6-digit code
+                if (otp.length === 6) {
+                    $('#farmerOtpContainer').hide();
+                    $('#farmerPasswordGroup').show();
+                    $('#farmerVerifyOtpBtn').hide();
+                    $('#farmerLoginBtn').show();
+                    alert('मोबाईल नंबर यशस्वीरित्या सत्यापित केला');
+                } else {
+                    alert('अवैध OTP. कृपया पुन्हा प्रयत्न करा');
+                }
+            });
+            
+            $('#farmerResendOtp').click(function(e) {
+                e.preventDefault();
+                startCountdown('farmer');
+                alert('नवीन OTP पाठवला आहे (डेमो: 123456)');
+            });
+            
+            // Other User OTP Flow
+            $('#otherSendOtpBtn').click(function() {
+                const phoneNumber = $('#otherMobile').val();
+                if (!phoneNumber) {
+                    alert('कृपया मोबाईल नंबर टाका');
+                    return;
+                }
+                
+                const userType = $('#userType').val();
+                if (!userType) {
+                    alert('कृपया वापरकर्ता प्रकार निवडा');
+                    return;
+                }
+                
+                // In a real app, you would send OTP here
+                // For demo, we'll simulate it
+                $('#otherOtpContainer').show();
+                $('#otherPasswordGroup').hide();
+                $('#otherSendOtpBtn').hide();
+                $('#otherVerifyOtpBtn').show();
+                startCountdown('other');
+                
+                alert('OTP पाठवला आहे (डेमो: 123456)');
+            });
+            
+            $('#otherVerifyOtpBtn').click(function() {
+                const otp = getOtp('other');
+                if (!otp || otp.length !== 6) {
+                    alert('कृपया 6 अंकी OTP टाका');
+                    return;
+                }
+                
+                // In a real app, verify OTP with Firebase
+                // For demo, we'll accept any 6-digit code
+                if (otp.length === 6) {
+                    $('#otherOtpContainer').hide();
+                    $('#otherPasswordGroup').show();
+                    $('#otherVerifyOtpBtn').hide();
+                    $('#otherLoginBtn').show();
+                    alert('मोबाईल नंबर यशस्वीरित्या सत्यापित केला');
+                } else {
+                    alert('अवैध OTP. कृपया पुन्हा प्रयत्न करा');
+                }
+            });
+            
+            $('#otherResendOtp').click(function(e) {
+                e.preventDefault();
+                startCountdown('other');
+                alert('नवीन OTP पाठवला आहे (डेमो: 123456)');
+            });
+            
+            // OTP digit input handling
+            $('.otp-digit').on('input', function() {
+                const index = parseInt($(this).data('index'));
+                const value = $(this).val();
+                
+                if (value.length === 1 && index < 6) {
+                    $(`.otp-digit[data-index="${index + 1}"]`).focus();
+                }
+            });
+            
+            // Farmer Form Submission
+            $('#farmerForm').submit(function (e) {
+                e.preventDefault();
+                const password = $('#farmerPassword').val();
+                
+                if (!password) {
+                    alert('कृपया पासवर्ड टाका');
+                    return;
+                }
+                
+                // Simulate successful login
+                localStorage.setItem('loggedIn', 'true');
+                localStorage.setItem('userType', 'farmer');
+                
+                // Redirect to farmer dashboard
+                window.location.href = 'farmer.html';
+
+            });
+    
+            // Other User Form Submission
+            $('#otherForm').submit(function (e) {
+                e.preventDefault();
+                const userType = $('#userType').val();
+                const password = $('#otherPassword').val();
+    
+                if (!userType) {
+                    alert('कृपया वापरकर्ता प्रकार निवडा');
+                    return;
+                }
+    
+                if (!password) {
+                    alert('कृपया पासवर्ड टाका');
+                    return;
+                }
+    
+                // Validate additional fields based on user type
+                let isValid = true;
+                let redirectPage = 'admin-dashboard.html';
+                
+                if (userType === 'csc') {
+                    if (!$('#cscId').val()) {
+                        alert('कृपया CSC आयडी टाका');
+                        isValid = false;
+                    } else {
+                        redirectPage = 'csc-dashboard.html';
+                    }
+                } else if (userType === 'zp') {
+                    if (!$('#zpDistrict').val()) {
+                        alert('कृपया जिल्हा टाका');
+                        isValid = false;
+                    } else {
+                        redirectPage = 'zp-dashboard.html';
+                    }
+                } else if (userType === 'dealer') {
+                    if (!$('#dealerLicense').val()) {
+                        alert('कृपया परवाना क्रमांक टाका');
+                        isValid = false;
+                    } else {
+                        redirectPage = 'dealer-dashboard.html';
+                    }
+                } else if (userType === 'landowner') {
+                    if (!$('#landLocation').val()) {
+                        alert('कृपया जमिनीचे स्थान टाका');
+                        isValid = false;
+                    } else {
+                        redirectPage = 'landowner-dashboard.html';
+                    }
+                }
+    
+                if (isValid) {
+                    // Simulate successful login
+                    localStorage.setItem('loggedIn', 'true');
+                    localStorage.setItem('userType', userType);
+                    
+                    // Store additional user data
+                    if (userType === 'csc') {
+                        localStorage.setItem('cscId', $('#cscId').val());
+                    } else if (userType === 'zp') {
+                        localStorage.setItem('district', $('#zpDistrict').val());
+                    } else if (userType === 'dealer') {
+                        localStorage.setItem('license', $('#dealerLicense').val());
+                    } else if (userType === 'landowner') {
+                        localStorage.setItem('location', $('#landLocation').val());
+                    }
+                    
+                    // Redirect to respective dashboard
+                    window.location.href = 'admin.html';
+
+                }
+            });
+        });
+        
+        // Function to get OTP from input fields
+        function getOtp(userType) {
+            let otp = '';
+            $(`#${userType}OtpContainer .otp-digit`).each(function() {
+                otp += $(this).val();
+            });
+            return otp;
+        }
+        
+        // Function to start countdown for OTP resend
+        function startCountdown(userType) {
+            let seconds = 60;
+            const countdownElement = $(`#${userType}Countdown`);
+            const resendLink = $(`#${userType}ResendOtp`);
+            
+            resendLink.hide();
+            countdownElement.text(seconds);
+            
+            const interval = setInterval(() => {
+                seconds--;
+                countdownElement.text(seconds);
+                
+                if (seconds <= 0) {
+                    clearInterval(interval);
+                    countdownElement.hide();
+                    resendLink.show();
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

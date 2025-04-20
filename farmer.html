@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriLease - शेतकरी मार्केटप्लेस</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1><i class="fas fa-tractor"></i> AgriLease</h1>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="जमिनी, यंत्रे, बियाणे शोधा...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="nav-links">
+                <a href="#home">मुख्यपृष्ठ</a>
+                <a href="#lands">जमीन भाड्याने द्या</a>
+                <a href="#machinery">शेती यंत्रे</a>
+                <a href="#products">उत्पादने</a>
+                <a href="#about">आमच्याबद्दल</a>
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </div>
+                <div class="user-info">
+                    <i class="fas fa-user"></i>
+                    <span>राजेश कुमार</span>
+                </div>
+                <button class="logout-btn">बाहेर पडा</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2>शेतकऱ्यांना सक्षम करणे, एकत्र प्रगती करणे</h2>
+            <p>शेतीची जमीन भाड्याने द्या, यंत्रे भाड्याने घ्या, आणि शेती उत्पादने खरेदी करा – एकाच ठिकाणी</p>
+            <div class="hero-buttons">
+                <button class="primary-btn">तुमची जमीन सूचीबद्ध करा</button>
+                <button class="secondary-btn">यंत्रे एक्सप्लोर करा</button>
+            </div>
+            <!-- Weather Button & Result
+            <div class="weather-box">
+                <button class="weather-btn" onclick="getWeather()">आजचं हवामान जाणून घ्या</button>
+                <div id="weatherResult"></div>
+            </div>
+        </div> -->
+    </section>
+
+    <!-- Quick Categories -->
+    <section class="quick-categories">
+        <div class="category-card" style="background-image: url('dan-meyers-IQVFVH0ajag-unsplash.jpg'); background-size: cover; background-position: center; height: 200px; display: flex; align-items: center; justify-content: center; color: white;">
+            <h3 style="color: aliceblue;">जमीन भाड्याने द्या</h3>
+        </div>
+        <div class="category-card" style="background-image: url('zac-edmonds-N1LBcqLP9ec-unsplash.jpg'); background-size: cover; background-position: center; height: 200px; display: flex; align-items: center; justify-content: center; color: white;">
+            <h3 style="color: aliceblue;">यंत्रे भाड्याने घ्या</h3>
+        </div>
+        <div class="category-card" style="background-image: url('AdobeStock_139639492_Preview.jpeg'); background-size: cover; background-position: center; height: 200px; display: flex; align-items: center; justify-content: center; color: white;">
+            <h3 style="color: aliceblue;">बियाणे खरेदी करा</h3>
+        </div>
+        <div class="category-card" style="background-image: url('AdobeStock_1097156722_Preview.jpeg'); background-size: cover; background-position: center; height: 200px; display: flex; align-items: center; justify-content: center; color: white;">
+            <h3 style="color: aliceblue;">खते</h3>
+        </div>
+    </section>
+
+    <!-- Featured Lands -->
+    <section class="product-section" id="lands">
+        <h2 class="section-title">भाड्याने उपलब्ध जमीन</h2>
+        <div class="product-grid">
+            <div class="product-card" onclick="showProductDetails('land1')">
+                <img src="dan-meyers-IQVFVH0ajag-unsplash.jpg" alt="5 Acre Organic Farm" style="height: 200px; width: 100%; object-fit: cover;">
+                <h3>५ एकर सेंद्रिय शेती</h3>
+                <p>चेन्नई, तमिळनाडू</p>
+                <div class="price">₹१५,०००/महिना</div>
+                <button class="quick-view">तपशील पहा</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('land2')">
+                <img src="karsten-wurth-UbGYPMbMYP8-unsplash.jpg" alt="8 Acre Fertile Land" style="height: 200px; width: 100%; object-fit: cover;">
+                <h3>८ एकर सुपीक जमीन</h3>
+                <p>पंजाब</p>
+                <div class="price">₹२२,०००/महिना</div>
+                <button class="quick-view">तपशील पहा</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('land3')">
+                <img src="dietmar-reichle-caiX9QloFc8-unsplash.jpg" alt="3 Acre with Irrigation" style="height: 200px; width: 100%; object-fit: cover;">
+                <h3>३ एकर सिंचनासह</h3>
+                <p>महाराष्ट्र</p>
+                <div class="price">₹१२,०००/महिना</div>
+                <button class="quick-view">तपशील पहा</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Machinery -->
+    <section class="product-section" id="machinery">
+        <h2 class="section-title">भाड्याने/खरेदीसाठी यंत्रे</h2>
+        <div class="product-grid">
+            <div class="product-card" onclick="showProductDetails('machine1')">
+                <img src="julia-koblitz-SPzzE4TYxZ0-unsplash.jpg" alt="John Deere Tractor" style="height: 200px; width: 100%; object-fit: cover;">
+                <h3>John Deere ट्रॅक्टर</h3>
+                <p>५० एचपी, २०२० मॉडेल</p>
+                <div class="price">₹१,५००/दिवस (भाडे)</div>
+                <div class="price">₹५,५०,००० (खरेदी)</div>
+                <button class="quick-view">तपशील पहा</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('machine2')">
+                <img src="randy-fath-dDc0vuVH_LU-unsplash.jpg" alt="Combine Harvester" style="height: 200px; width: 100%; object-fit: cover;">
+                <h3>कॉम्बाईन हार्वेस्टर</h3>
+                <p>२०२१ मॉडेल</p>
+                <div class="price">₹३,०००/दिवस (भाडे)</div>
+                <div class="price">₹१२,००,००० (खरेदी)</div>
+                <button class="quick-view">तपशील पहा</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('machine3')">
+                <img src="zac-edmonds-N1LBcqLP9ec-unsplash.jpg" alt="Solar Irrigation Pump" style="height: 200px; width: 100%; object-fit: cover;">
+                <h3>सौर सिंचन पंप</h3>
+                <p>५ एचपी क्षमतेचा</p>
+                <div class="price">₹५००/दिवस (भाडे)</div>
+                <div class="price">₹४५,००० (खरेदी)</div>
+                <button class="quick-view">तपशील पहा</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="product-section" id="products">
+        <h2 class="section-title">शेती उत्पादने</h2>
+        <div class="product-grid">
+            <div class="product-card" onclick="showProductDetails('product1')">
+                <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Hybrid Wheat Seeds" style="height: 200px; width: 100%; object-fit: cover;">
+                <h3>हायब्रीड गहू बियाणे</h3>
+                <p>उच्च उत्पादन क्षमता</p>
+                <div class="price">₹१,२००/किलो</div>
+                <button class="quick-view">तपशील पहा</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('product2')">
+                <img src="istockphoto-479440915-2048x2048.jpg" alt="Organic Fertilizer" style="height: 200px; width: 100%; object-fit: cover;">
+                <h3>सेंद्रिय खते</h3>
+                <p>५० किलो पिशवी</p>
+                <div class="price">₹८००/पिशवी</div>
+                <button class="quick-view">तपशील पहा</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('product3')">
+                <img src="AdobeStock_1097156722_Preview.jpeg" alt="Bio Pesticide" style="height: 200px; width: 100%; object-fit: cover;">
+                <h3>जैविक कीटकनाशक</h3>
+                <p>पिकांसाठी सुरक्षित</p>
+                <div class="price">₹१,५००/लिटर</div>
+                <button class="quick-view">तपशील पहा</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="modal-body" id="modalBody">
+                <!-- उत्पादन तपशील येथे लोड होईल -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>AgriLease</h3>
+                <p>शेतकऱ्यांना आवश्यक संसाधनांशी जोडणारा मंच.</p>
+            </div>
+            <div class="footer-section">
+                <h3>जलद दुवे</h3>
+                <ul>
+                    <li><a href="#home">मुख्यपृष्ठ</a></li>
+                    <li><a href="#lands">जमीन भाड्याने द्या</a></li>
+                    <li><a href="#machinery">शेती यंत्रे</a></li>
+                    <li><a href="#products">उत्पादने</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>आमच्याशी संपर्क साधा</h3>
+                <p><i class="fas fa-phone"></i> +९१ ९८७६५४३२१०</p>
+                <p><i class="fas fa-envelope"></i> support@agrilease.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> बेंगळुरू, भारत</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; २०२३ AgriLease. सर्व हक्क राखीव.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

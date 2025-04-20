@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriLease - व्यवस्थापन डॅशबोर्ड</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #388e3c;
+            --primary-dark: #2e7d32;
+            --primary-light: #81c784;
+            --secondary-color: #f5f5f5;
+            --text-dark: #333;
+            --text-medium: #555;
+            --text-light: #777;
+            --border-color: #ddd;
+            --error-color: #d32f2f;
+            --success-color: #388e3c;
+            --warning-color: #ffa000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--text-dark);
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-header h2 {
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-header p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 0.3rem;
+        }
+
+        .nav-menu {
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-medium);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            margin-top: auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--error-color);
+            cursor: pointer;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .logout-btn:hover {
+            background-color: #ffebee;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .top-bar h1 {
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-name {
+            font-weight: 500;
+        }
+
+        /* Dashboard Stats */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin: 0.5rem 0;
+        }
+
+        .stat-card .stat-label {
+            color: var(--text-medium);
+            font-size: 0.9rem;
+        }
+
+        .stat-card i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        /* Tables */
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-header h3 {
+            color: var(--primary-dark);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: var(--secondary-color);
+            border-radius: 5px;
+            padding: 0.5rem 1rem;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 0.5rem;
+            outline: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            color: var(--text-medium);
+            font-weight: 500;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-available {
+            background-color: rgba(56, 142, 60, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-rented {
+            background-color: rgba(211, 47, 47, 0.1);
+            color: var(--error-color);
+        }
+
+        .status-maintenance {
+            background-color: rgba(255, 160, 0, 0.1);
+            color: var(--warning-color);
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-medium);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-dark);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-medium);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .sidebar-header {
+                padding: 0;
+                border-bottom: none;
+                margin-bottom: 0;
+            }
+            .nav-menu {
+                display: flex;
+                gap: 1rem;
+            }
+            .nav-item {
+                padding: 0.5rem;
+            }
+            .logout-btn {
+                margin-top: 0;
+                border-top: none;
+                padding: 0.5rem;
+            }
+            .main-content {
+                padding: 1.5rem;
+            }
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .nav-menu {
+                display: none;
+            }
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-leaf"></i> AgriLease</h2>
+                <p>शेती उपकरणे व्यवस्थापन</p>
+            </div>
+            <div class="nav-menu">
+                <div class="nav-item active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>डॅशबोर्ड</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>शेतकरी</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-tractor"></i>
+                    <span>उपकरणे</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>तैनाती</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>अहवाल</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>सेटिंग्ज</span>
+                </div>
+            </div>
+            <div class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>लॉगआउट</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <h1><i class="fas fa-tachometer-alt"></i> डॅशबोर्ड विहंगावलोकन</h1>
+                <div class="user-profile">
+                    <div class="user-avatar">AD</div>
+                    <span class="user-name">प्रशासक</span>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-value">२४७</div>
+                    <div class="stat-label">नोंदणीकृत शेतकरी</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-tractor"></i>
+                    <div class="stat-value">५८</div>
+                    <div class="stat-label">एकूण उपकरणे</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="stat-value">४२</div>
+                    <div class="stat-label">उपलब्ध उपकरणे</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div class="stat-value">१६</div>
+                    <div class="stat-label">सक्रिय तैनाती</div>
+                </div>
+            </div>
+
+            <!-- Farmers Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-users"></i> नोंदणीकृत शेतकरी</h3>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="शेतकऱ्यांमध्ये शोधा...">
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>आयडी</th>
+                            <th>नाव</th>
+                            <th>संपर्क</th>
+                            <th>स्थान</th>
+                            <th>जमीन क्षेत्र (एकर)</th>
+                            <th>भाड्याने घेतलेली उपकरणे</th>
+                            <th>क्रिया</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>F1001</td>
+                            <td>राजेश पाटील</td>
+                            <td>९८७६५४३२१०</td>
+                            <td>गाव A, जिल्हा X</td>
+                            <td>५.२</td>
+                            <td>ट्रॅक्टर (२), हार्वेस्टर (१)</td>
+                            <td>
+                                <button class="action-btn btn-outline"><i class="fas fa-eye"></i> पहा</button>
+                                <button class="action-btn btn-primary"><i class="fas fa-edit"></i> संपादन</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>F1002</td>
+                            <td>प्रिया शर्मा</td>
+                            <td>८७६५४३२१०९</td>
+                            <td>गाव B, जिल्हा Y</td>
+                            <td>३.८</td>
+                            <td>सीडर (१)</td>
+                            <td>
+                                <button class="action-btn btn-outline"><i class="fas fa-eye"></i> पहा</button>
+                                <button class="action-btn btn-primary"><i class="fas fa-edit"></i> संपादन</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>F1003</td>
+                            <td>विक्रम सिंग</td>
+                            <td>७६५४३२१०९८</td>
+                            <td>गाव C, जिल्हा Z</td>
+                            <td>७.५</td>
+                            <td>काहीही नाही</td>
+                            <td>
+                                <button class="action-btn btn-outline"><i class="fas fa-eye"></i> पहा</button>
+                                <button class="action-btn btn-primary"><i class="fas fa-edit"></i> संपादन</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>F1004</td>
+                            <td>अनन्या रेड्डी</td>
+                            <td>६५४३२१०९८७</td>
+                            <td>गाव D, जिल्हा X</td>
+                            <td>४.०</td>
+                            <td>ट्रॅक्टर (१), नांगर (२)</td>
+                            <td>
+                                <button class="action-btn btn-outline"><i class="fas fa-eye"></i> पहा</button>
+                                <button class="action-btn btn-primary"><i class="fas fa-edit"></i> संपादन</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Equipment Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-tractor"></i> उपकरणे सूची</h3>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="उपकरणांमध्ये शोधा...">
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>आयडी</th>
+                            <th>उपकरणाचे नाव</th>
+                            <th>प्रकार</th>
+                            <th>स्थिती</th>
+                            <th>सध्याचे स्थान</th>
+                            <th>भाड्याने दिले</th>
+                            <th>क्रिया</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>E2001</td>
+                            <td>जॉन डिअर ट्रॅक्टर</td>
+                            <td>ट्रॅक्टर</td>
+                            <td><span class="status status-rented">भाड्याने दिले</span></td>
+                            <td>गाव A, जिल्हा X</td>
+                            <td>राजेश पाटील (F1001)</td>
+                            <td>
+                                <button class="action-btn btn-outline"><i class="fas fa-eye"></i> पहा</button>
+                                <button class="action-btn btn-primary deploy-btn"><i class="fas fa-map-marker-alt"></i> तैनात करा</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>E2002</td>
+                            <td>महिंद्रा हार्वेस्टर</td>
+                            <td>हार्वेस्टर</td>
+                            <td><span class="status status-available">उपलब्ध</span></td>
+                            <td>मध्यवर्ती गोदाम</td>
+                            <td>-</td>
+                            <td>
+                                <button class="action-btn btn-outline"><i class="fas fa-eye"></i> पहा</button>
+                                <button class="action-btn btn-primary deploy-btn"><i class="fas fa-map-marker-alt"></i> तैनात करा</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>E2003</td>
+                            <td>कुबोटा सीडर</td>
+                            <td>सीडर</td>
+                            <td><span class="status status-rented">भाड्याने दिले</span></td>
+                            <td>गाव B, जिल्हा Y</td>
+                            <td>प्रिया शर्मा (F1002)</td>
+                            <td>
+                                <button class="action-btn btn-outline"><i class="fas fa-eye"></i> पहा</button>
+                                <button class="action-btn btn-primary deploy-btn"><i class="fas fa-map-marker-alt"></i> तैनात करा</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>E2004</td>
+                            <td>न्यू हॉलंड नांगर</td>
+                            <td>नांगर</td>
+                            <td><span class="status status-maintenance">दुरुस्ती</span></td>
+                            <td>सर्व्हिस सेंटर</td>
+                            <td>-</td>
+                            <td>
+                                <button class="action-btn btn-outline"><i class="fas fa-eye"></i> पहा</button>
+                                <button class="action-btn btn-primary deploy-btn"><i class="fas fa-map-marker-alt"></i> तैनात करा</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deployment Modal -->
+    <div class="modal" id="deploymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-map-marker-alt"></i> उपकरण तैनात करा</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="deploymentForm">
+                <div class="form-group">
+                    <label for="equipmentSelect">उपकरण</label>
+                    <select id="equipmentSelect" disabled>
+                        <option value="E2002">महिंद्रा हार्वेस्टर (E2002)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="farmerSelect">शेतकऱ्याला नियुक्त करा</label>
+                    <select id="farmerSelect">
+                        <option value="">शेतकरी निवडा</option>
+                        <option value="F1001">राजेश पाटील (F1001)</option>
+                        <option value="F1002">प्रिया शर्मा (F1002)</option>
+                        <option value="F1003">विक्रम सिंग (F1003)</option>
+                        <option value="F1004">अनन्या रेड्डी (F1004)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="deploymentLocation">तैनाती स्थान</label>
+                    <input type="text" id="deploymentLocation" placeholder="तैनाती स्थान प्रविष्ट करा">
+                </div>
+                <div class="form-group">
+                    <label for="startDate">प्रारंभ तारीख</label>
+                    <input type="date" id="startDate">
+                </div>
+                <div class="form-group">
+                    <label for="duration">कालावधी (दिवस)</label>
+                    <input type="number" id="duration" placeholder="दिवसांमध्ये कालावधी प्रविष्ट करा">
+                </div>
+                <div class="form-group">
+                    <label for="notes">टिपा</label>
+                    <textarea id="notes" rows="3" placeholder="काही विशेष सूचना"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="action-btn btn-outline close-modal">रद्द करा</button>
+                    <button type="submit" class="action-btn btn-primary">तैनाती निश्चित करा</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Navigation menu functionality
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                // In a real app, this would load different content
+                console.log('Navigating to:', this.querySelector('span').textContent);
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('deploymentModal');
+        const deployBtns = document.querySelectorAll('.deploy-btn');
+        const closeBtn = document.querySelector('.close-btn');
+        const closeModalBtn = document.querySelector('.close-modal');
+
+        deployBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const equipmentId = row.cells[0].textContent;
+                const equipmentName = row.cells[1].textContent;
+                
+                // Set equipment in modal (in a real app, you'd fetch details)
+                document.getElementById('equipmentSelect').innerHTML = 
+                    `<option value="${equipmentId}">${equipmentName} (${equipmentId})</option>`;
+                
+                modal.style.display = 'flex';
+            });
+        });
+
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        closeModalBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Form submission
+        document.getElementById('deploymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const equipment = document.getElementById('equipmentSelect').value;
+            const farmer = document.getElementById('farmerSelect').value;
+            const location = document.getElementById('deploymentLocation').value;
+            const startDate = document.getElementById('startDate').value;
+            const duration = document.getElementById('duration').value;
+            
+            // In a real app, send this data to the server
+            console.log('Deployment data:', {
+                equipment,
+                farmer,
+                location,
+                startDate,
+                duration
+            });
+            
+            // Show success (in a real app, you'd have proper error handling)
+            alert('उपकरण यशस्वीरित्या तैनात केले!');
+            modal.style.display = 'none';
+            this.reset();
+        });
+
+        // Logout button functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            // In a real app, this would clear session and redirect
+            alert('यशस्वीरित्या लॉगआउट केले');
+            window.location.reload();
+        });
+    </script>
+</body>
+</html>
